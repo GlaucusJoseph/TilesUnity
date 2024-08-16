@@ -1,37 +1,39 @@
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Tilemaps;
 
-public class NewBehaviourScript : MonoBehaviour
+public class GridManager : MonoBehaviour
 {
+    public static GridManager Instance;
+
     [SerializeField]
     private int _width,
         _height;
 
     [SerializeField]
-    private Tile _tilePreFab;
+    private Tile _grassTile,
+        _mountainTile;
 
     [SerializeField]
     private Transform _camera;
 
     private Dictionary<Vector2, Tile> _tiles;
 
-    void Start()
+    void Awake()
     {
-        GenerateGrid();
+        Instance = this;
     }
 
-    void GenerateGrid()
+    public void GenerateGrid()
     {
         for (int x = 0; x < _width; x++)
         {
             for (int y = 0; y < _height; y++)
             {
-                var spawmedTile = Instantiate(_tilePreFab, new Vector3(x, y), Quaternion.identity);
+                var randomTile = Random.Range(0, 6) == 3 ? _mountainTile : _grassTile;
+                var spawmedTile = Instantiate(randomTile, new Vector3(x, y), Quaternion.identity);
                 spawmedTile.name = $"Tile {x} {y}";
 
-                var isOffset = (x % 2 == 0 && y % 2 != 0) || (x % 2 != 0 && y % 2 == 0);
-                spawmedTile.Init(isOffset);
+                spawmedTile.Init(x, y);
 
                 _tiles[new Vector2(x, y)] = spawmedTile;
             }
@@ -42,6 +44,8 @@ public class NewBehaviourScript : MonoBehaviour
             (float)_height / 2 - 0.5f,
             -10
         );
+
+        GameManager.Instance.ChangeState(GameState.SpawnHeroes);
     }
 
     public Tile GetTileAtPosition(Vector2 position)
