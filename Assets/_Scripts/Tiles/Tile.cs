@@ -8,6 +8,12 @@ public abstract class Tile : MonoBehaviour
     [SerializeField]
     private GameObject _highlight;
 
+    [SerializeField]
+    private bool _isWalkable;
+
+    public BaseUnit OccupiedUnit;
+    public bool Walkable => _isWalkable && OccupiedUnit == null;
+
     public virtual void Init(int x, int y) { }
 
     void OnMouseEnter()
@@ -18,5 +24,16 @@ public abstract class Tile : MonoBehaviour
     void OnMouseExit()
     {
         _highlight.SetActive(false);
+    }
+
+    public void SetUnit(BaseUnit unit)
+    {
+        if (unit.OccupiedTile != null)
+        {
+            unit.OccupiedTile.OccupiedUnit = null;
+        }
+        unit.transform.position = transform.position;
+        OccupiedUnit = unit;
+        unit.OccupiedTile = this;
     }
 }

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class GridManager : MonoBehaviour
@@ -25,6 +26,7 @@ public class GridManager : MonoBehaviour
 
     public void GenerateGrid()
     {
+        _tiles = new Dictionary<Vector2, Tile>();
         for (int x = 0; x < _width; x++)
         {
             for (int y = 0; y < _height; y++)
@@ -46,6 +48,24 @@ public class GridManager : MonoBehaviour
         );
 
         GameManager.Instance.ChangeState(GameState.SpawnHeroes);
+    }
+
+    public Tile GetHeroSpawnTile()
+    {
+        return _tiles
+            .Where(t => t.Key.x < _width / 2 && t.Value.Walkable)
+            .OrderBy(t => Random.value)
+            .First()
+            .Value;
+    }
+
+    public Tile GetEnemieSpawnTile()
+    {
+        return _tiles
+            .Where(t => t.Key.x > _width / 2 && t.Value.Walkable)
+            .OrderBy(t => Random.value)
+            .First()
+            .Value;
     }
 
     public Tile GetTileAtPosition(Vector2 position)
