@@ -82,6 +82,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58f806644efee5540b0f4e6edc6d5414, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  TileName: Grassland
   _renderer: {fileID: 3399818143083749318}
   _highlight: {fileID: 7939001177463083991}
   _isWalkable: 1

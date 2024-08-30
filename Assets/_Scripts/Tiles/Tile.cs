@@ -2,6 +2,8 @@ using UnityEngine;
 
 public abstract class Tile : MonoBehaviour
 {
+    public string TileName;
+
     [SerializeField]
     protected SpriteRenderer _renderer;
 
@@ -19,11 +21,44 @@ public abstract class Tile : MonoBehaviour
     void OnMouseEnter()
     {
         _highlight.SetActive(true);
+        MenuManager.Instance.ShowTileInfo(this);
     }
 
     void OnMouseExit()
     {
         _highlight.SetActive(false);
+        MenuManager.Instance.ShowTileInfo(null);
+    }
+
+    void OnMouseDown()
+    {
+        if (GameManager.Instance.GameState != GameState.HeroesTurn)
+            return;
+
+        if (OccupiedUnit != null)
+        {
+            if (OccupiedUnit.Faction == Faction.Hero)
+            {
+                UnitManager.Instance.SetSelectedHero((BaseHero)OccupiedUnit);
+            }
+            else
+            {
+                if (UnitManager.Instance.SelectedHero != null)
+                {
+                    var enemy = (BaseEnemy)OccupiedUnit;
+                    Destroy(enemy.gameObject);
+                    UnitManager.Instance.SetSelectedHero(null);
+                }
+            }
+        }
+        else
+        {
+            if (UnitManager.Instance.SelectedHero != null)
+            {
+                SetUnit(UnitManager.Instance.SelectedHero);
+                UnitManager.Instance.SetSelectedHero(null);
+            }
+        }
     }
 
     public void SetUnit(BaseUnit unit)

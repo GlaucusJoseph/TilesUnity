@@ -97,4 +97,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 25e3ff7a98a50fb45b4a3bf32e43c9fa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  UnitName: Cabalaza Verde
   OccupiedTile: {fileID: 0}
+  Faction: 0

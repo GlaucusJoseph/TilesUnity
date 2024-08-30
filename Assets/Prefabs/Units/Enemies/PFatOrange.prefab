@@ -97,4 +97,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 97e982ff9b814ea4b9cbb1840fb18338, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  UnitName: Calabaza Naranja
   OccupiedTile: {fileID: 0}
+  Faction: 0
